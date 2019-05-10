@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Matrix_Ceramic</string>
+    <string name="name">Название</string>
+    <string name="type">Тип матрицы</string>
+    <string name="part">Часть матрицы</string>
+    <string name="weight">Вес</string>
+    <string name="rack">Стеллаж</string>
+    <string name="inventory">Инвентарный номер</string>
+    <string name="add">Добавить</string>
+    <string name="find">Найти</string>
 </resources>

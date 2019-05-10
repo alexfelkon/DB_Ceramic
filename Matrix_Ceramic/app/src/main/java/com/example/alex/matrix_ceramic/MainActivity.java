@@ -2,8 +2,14 @@ package com.example.alex.matrix_ceramic;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
+    Button add, find;
+    EditText name, inventory, weight, rack;
+    AutoCompleteTextView type, pert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
