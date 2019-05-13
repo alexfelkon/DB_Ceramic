@@ -8,4 +8,25 @@
     <string name="inventory">Инвентарный номер</string>
     <string name="add">Добавить</string>
     <string name="find">Найти</string>
+    <string-array name="arr_type">
+        <item>унитаз</item>
+        <item>умывальник</item>
+        <item>бачок 2ой</item>
+        <item>бачок 3ой</item>
+        <item>крышки 2ого бачка</item>
+        <item>крышки 3ого бачка</item>
+        <item>постамент</item>
+        <item>писуар</item>
+    </string-array>
+    <string-array name="arr_washbowl">
+        <item>папа</item>
+        <item>мама</item>
+    </string-array>
+    <string-array name="arr_toilet">
+        <item>правая боковушка</item>
+        <item>левая боковушка</item>
+        <item>крышка</item>
+        <item>ножка</item>
+        <item>спинка</item>
+    </string-array>
 </resources>
