@@ -8,6 +8,10 @@
     <string name="inventory">Инвентарный номер</string>
     <string name="add">Добавить</string>
     <string name="find">Найти</string>
+    <string name="not_name">Введите название</string>
+    <string name="not_type">Введите тип изделия</string>
+    <string name="not_part">Введите часть</string>
+    <string name="exist_matrix">Матрица существует</string>
     <string-array name="arr_type">
         <item>унитаз</item>
         <item>умывальник</item>

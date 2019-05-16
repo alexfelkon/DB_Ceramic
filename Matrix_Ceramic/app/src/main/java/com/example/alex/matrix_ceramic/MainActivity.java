@@ -13,12 +13,15 @@ public class MainActivity extends AppCompatActivity {
     Button add, find;
     EditText name, inventory, weight, rack;
     AutoCompleteTextView type, part;
+    Matrix_DB db;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = new Matrix_DB(this);
+        db.open();
 
         add = (Button) findViewById(R.id.btn_add);
         find = (Button)findViewById(R.id.btn_find);
@@ -54,6 +57,28 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     part.setAdapter(adapterWashbowl);
                     part.setEnabled(true);
+                }
+            }
+        });
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (name.getText().toString().equals(""))Toast.makeText(getApplicationContext(), R.string.not_name, Toast.LENGTH_SHORT).show();
+                else if (type.getText().toString().equals(""))Toast.makeText(getApplicationContext(), R.string.not_type, Toast.LENGTH_SHORT).show();
+                else if (part.getText().toString().equals(""))Toast.makeText(getApplicationContext(), R.string.not_part, Toast.LENGTH_SHORT).show();
+
+                String tempName = name.getText().toString().substring(0,1).toUpperCase() + name.getText().toString().substring(1).toLowerCase();
+                String tempType = type.getText().toString();
+                String tempPart = part.getText().toString();
+
+                if (db.existMatrix(tempName, tempType, tempPart))
+                    Toast.makeText(getApplicationContext(), R.string.exist_matrix, Toast.LENGTH_SHORT).show();
+                else {
+                    String tempInventory = inventory.getText().toString();
+                    String tempWeight = weight.getText().toString();
+                    String tempRack = rack.getText().toString();
+                    db.add(tempName,tempType,tempPart,tempInventory,tempWeight,tempRack);
                 }
             }
         });

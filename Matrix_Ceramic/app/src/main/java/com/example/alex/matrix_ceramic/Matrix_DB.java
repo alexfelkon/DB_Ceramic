@@ -2,6 +2,7 @@ package com.example.alex.matrix_ceramic;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -9,12 +10,12 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by Alex on 10.05.2019.
  */
 public class Matrix_DB {
-    public static final String DATABASE = "product";
+    public static final String DB_NAME = "product";
     public static final int VERSION = 1;
     public static final String TABLE_NAME = "matrix";
     public static final String ID = "_id";
     public static final String NAME = "name";
-    public static final String TYPE = "name";
+    public static final String TYPE = "type";
     public static final String PART = "part";
     public static final String INVENTORY = "inventory";
     public static final String WEIGHT = "weight";
@@ -27,7 +28,9 @@ public class Matrix_DB {
             PART + " TEXT, " +
             INVENTORY + " INTEGER, " +
             WEIGHT + " INTEGER, " +
-            RACK + " INTEGER);";
+            RACK + " INTEGER)";
+
+
 
     private final Context context;
 
@@ -35,13 +38,12 @@ public class Matrix_DB {
         this.context = context;
     }
     private DBHelper dbHelper;
-
-    private SQLiteDatabase sqLiteDatabase;
+    SQLiteDatabase sqlDB;
 
     //открыть подключение
     public void open(){
-        dbHelper = new DBHelper(context, DATABASE, null, VERSION);
-        sqLiteDatabase = dbHelper.getWritableDatabase();
+        dbHelper = new DBHelper(context, DB_NAME, null, VERSION);
+        sqlDB = dbHelper.getWritableDatabase();
     }
 
     //закрыть подключение
@@ -64,13 +66,31 @@ public class Matrix_DB {
         cv.put(PART, part);
         cv.put(WEIGHT, weight);
         cv.put(RACK, rack);
-        sqLiteDatabase.insert(TABLE_NAME,null,cv);
+        sqlDB.insert(TABLE_NAME,null,cv);
 
+    }
+
+    //проверка записи в таблице
+    boolean existMatrix(String name, String type, String part){
+        Cursor cursor = sqlDB.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " +
+                NAME + " = ? AND " + TYPE + " = ? AND " + PART + " = ?", new String[]{name, type, part});
+        if (cursor.getCount()==0) return false;
+        else return true;
+    }
+
+    //изменить данные
+    public void editDate(String name, String type, String part, String inventori, String weight, String rack){
+
+    }
+
+    //удалить данные
+    public void deleteRaw(String name, String type, String part){
+        sqlDB.delete(TABLE_NAME, NAME + " = ? AND " + TYPE + " = ? AND " + PART + " = ?", new String[]{name,type,part});
     }
 
 
 
-    public class DBHelper extends SQLiteOpenHelper{
+    private class DBHelper extends SQLiteOpenHelper{
 
         public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
             super(context, name, factory, version);
