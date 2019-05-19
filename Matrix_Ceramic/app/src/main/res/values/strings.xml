@@ -5,6 +5,7 @@
     <string name="part">Часть матрицы</string>
     <string name="weight">Вес</string>
     <string name="rack">Стеллаж</string>
+    <string name="inventory2">Инв№</string>
     <string name="inventory">Инвентарный номер</string>
     <string name="add">Добавить</string>
     <string name="find">Найти</string>

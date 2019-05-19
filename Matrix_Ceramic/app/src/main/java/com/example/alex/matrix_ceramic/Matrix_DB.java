@@ -30,6 +30,10 @@ public class Matrix_DB {
             WEIGHT + " INTEGER, " +
             RACK + " INTEGER)";
 
+    public int setInt (String value){
+        return Integer.parseInt(value);
+    }
+
 
 
     private final Context context;
@@ -79,13 +83,28 @@ public class Matrix_DB {
     }
 
     //изменить данные
-    public void editDate(String name, String type, String part, String inventori, String weight, String rack){
+    public void editDate(String name, String type, String part, String inventory, String weight, String rack){
+        String columnWhere = NAME + " = ? AND " + TYPE + " = ? AND " + PART + " = ?";
+        String[] args = new String[] {name, type, part};
+        ContentValues cv = new ContentValues();
+
+        if (!inventory.equals(""))cv.put(INVENTORY,setInt(inventory));
+        if (!weight.equals(""))cv.put(WEIGHT,setInt(weight));
+        if (!rack.equals(""))cv.put(RACK,setInt(rack));
+        sqlDB.update(TABLE_NAME,cv, columnWhere,args);
+
 
     }
 
     //удалить данные
     public void deleteRaw(String name, String type, String part){
         sqlDB.delete(TABLE_NAME, NAME + " = ? AND " + TYPE + " = ? AND " + PART + " = ?", new String[]{name,type,part});
+    }
+
+    //получить все данные
+    public Cursor allDate(){
+        //return sqlDB.query(TABLE_NAME,null,null,null,null,null,null);
+        return sqlDB.rawQuery("SELECT * FROM " + TABLE_NAME, null);
     }
 
 

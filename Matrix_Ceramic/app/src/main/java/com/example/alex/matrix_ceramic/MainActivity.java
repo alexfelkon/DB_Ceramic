@@ -1,5 +1,6 @@
 package com.example.alex.matrix_ceramic;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,11 +10,40 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button add, find;
     EditText name, inventory, weight, rack;
     AutoCompleteTextView type, part;
     Matrix_DB db;
+
+    public String setName (){
+        return name.getText().toString().substring(0,1).toUpperCase() + name.getText().toString().substring(1).toLowerCase();
+    }
+
+    public String setType (){
+        return type.getText().toString();
+    }
+
+    public String setPart(){
+        return part.getText().toString();
+    }
+
+    public String setInventory(){
+        return inventory.getText().toString();
+    }
+
+    public String setWeight(){
+        return weight.getText().toString();
+    }
+
+    public String setRack(){
+        return rack.getText().toString();
+    }
+
+    public void setToast (int toast){
+        Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_SHORT).show();
+    }
+
 
 
     @Override
@@ -46,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         final ArrayAdapter<String> adapterWashbowl = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, listWashbowl);
         type.setAdapter(adapterType);
 
+
         type.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -61,30 +92,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //обработка нажития на кнопку "Добавить"
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (name.getText().toString().equals(""))Toast.makeText(getApplicationContext(), R.string.not_name, Toast.LENGTH_SHORT).show();
-                else if (type.getText().toString().equals(""))Toast.makeText(getApplicationContext(), R.string.not_type, Toast.LENGTH_SHORT).show();
-                else if (part.getText().toString().equals(""))Toast.makeText(getApplicationContext(), R.string.not_part, Toast.LENGTH_SHORT).show();
+                if (name.getText().toString().equals(""))setToast(R.string.not_name);
+                else if (type.getText().toString().equals(""))setToast(R.string.not_type);
+                else if (part.getText().toString().equals(""))setToast(R.string.not_part);
 
-                String tempName = name.getText().toString().substring(0,1).toUpperCase() + name.getText().toString().substring(1).toLowerCase();
-                String tempType = type.getText().toString();
-                String tempPart = part.getText().toString();
-
-                if (db.existMatrix(tempName, tempType, tempPart))
-                    Toast.makeText(getApplicationContext(), R.string.exist_matrix, Toast.LENGTH_SHORT).show();
+                if (db.existMatrix(setName(), setType(), setPart()))
+                    setToast(R.string.exist_matrix);
                 else {
-                    String tempInventory = inventory.getText().toString();
-                    String tempWeight = weight.getText().toString();
-                    String tempRack = rack.getText().toString();
-                    db.add(tempName,tempType,tempPart,tempInventory,tempWeight,tempRack);
+                    db.add(setName(),setType(),setPart(),setInventory(),setWeight(),setRack());
                 }
             }
         });
 
+        //обработка нажития на кнопку "Найти"
+        find.setOnClickListener(this);
 
 
+    }
 
+    @Override
+    public void onClick(View view) {
+        if (name.getText().toString().equals("")) setToast(R.string.not_name);
+
+        else {
+            Intent intent = new Intent(this, ListViewActivity.class);
+            intent.putExtra("name", setName());
+            intent.putExtra("type", setType());
+            intent.putExtra("part", setPart());
+            intent.putExtra("inventory", setInventory());
+            startActivity(intent);
+
+        }
     }
 }
